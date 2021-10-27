@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+	
+    <property name="autoIncrement" value="false" dbms="postgresql,mssql,oracle"/>
+    <property name="autoIncrement" value="true" dbms="h2"/>
+
+    <changeSet author="svoskresenskaya" id="1.0.0.1-createVerificationTable" runInTransaction="false" context="update">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="SMS_VERIFICATION"/>
+            </not>
+        </preConditions>
+
+        <createSequence sequenceName="sms_verification_verificationid_seq" incrementBy="1" startValue="1"/>
+
+        <createTable remarks="SMS_VERIFICATION" tableName="SMS_VERIFICATION">
+            <column name="VERIFICATIONID" remarks="идентиикатор" type="NUMERIC(19,0)" autoIncrement="${autoIncrement}" defaultValueSequenceNext="sms_verification_verificationid_seq">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="PROCESSGUID" remarks="уникальный guid" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHONENUMBER" remarks="телефонный номер" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="SECRETCODE" remarks="секретный код" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="STATUS" remarks="статус" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="svoskresenskaya" id="1.0.0.2-createVerificationIndex" runInTransaction="false" context="update">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="i01_sms_verification"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="SMS_VERIFICATION" indexName="i01_sms_verification" unique="true">
+            <column name="PROCESSGUID"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet author="svoskresenskaya" id="1.0.0.3-createVerificationIndex" runInTransaction="false" context="update">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <indexExists indexName="i02_sms_verification"/>
+            </not>
+        </preConditions>
+
+        <createIndex tableName="SMS_VERIFICATION" indexName="i02_sms_verification" unique="false">
+            <column name="SECRETCODE"/>
+            <column name="STATUS"/>
+        </createIndex>
+    </changeSet>
+		
+</databaseChangeLog>

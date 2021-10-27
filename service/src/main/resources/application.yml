@@ -1,0 +1,64 @@
+server:
+  port: ${SERVICE_PORT}
+  servlet:
+    context-path: /${SERVICE_NAME:demo}
+
+eureka:
+  client:
+    enabled: ${EUREKA_CLIENT_ENABLED}
+    registerWithEureka: ${EUREKA_CLIENT_ENABLED}
+    serviceUrl:
+      defaultZone: ${EUREKA_URL}
+
+security:
+  enabled: false
+  oauth2:
+    client:
+      clientId: ${OAUTH2_CLIENT_ID}
+      clientSecret: ${OAUTH2_CLIENT_SECRET}
+      scope: openid
+      accessTokenUri: ${AUTH_SERVER_URL}/mdpauth/oauth/token
+      userAuthorizationUri: ${AUTH_SERVER_URL}/mdpauth/oauth/authorize
+    resource:
+      jwt:
+        key-uri: ${AUTH_SERVER_URL}/mdpauth/oauth/token_key
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  profiles:
+    include: shared
+  datasource:
+    driverClassName: ${DB_DRIVER}
+    url: ${DB_URL}
+    username: ${DB_LOGIN}
+    password: ${DB_PASSWORD}
+    hikari:
+      connection-test-query: ${DB_TEST_QUERY:}
+      maximumPoolSize: ${HIKARI_MAXIMUM_POOLSIZE:10}
+      minimumIdle: ${HIKARI_MINIMUM_IDLE:10}
+      idleTimeout: ${HIKARI_IDLE_TIMEOUT:600000}
+      connectionTimeout: ${HIKARI_CONNECTION_TIMEOUT:30000}
+      maxLifetime: ${HIKARI_MAX_LIFETIME:1800000}
+  jpa:
+    database-platform: ${JPA_DIALECT:org.hibernate.dialect.PostgreSQL95Dialect}
+    show-sql: true
+    generate-ddl: ${GENERATE_DDL:false}
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: ${JPA_STRATEGY:org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl}
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        jdbc:
+          time_zone: UTC
+          lob:
+            non_contextual_creation: true
+
+logging:
+  config: classpath:log4j2.xml
+  level:
+    ROOT: ${LOGGING_ROOT_LEVEL:INFO}
+    ru.diasoft.micro: ${LOGGING_LEVEL:DEBUG}
+    org.hibernate.type: ${LOGGING_HIBERNATE_LEVEL:INFO} #To log values set TRACE

@@ -1,0 +1,106 @@
+server:
+  port: 7081
+
+security: 
+  enabled: false
+  oauth2: 
+    client: 
+      clientId:
+      clientSecret: 
+      scope:
+      accessTokenUri:
+      userAuthorizationUri:
+    resource: 
+      jwt: 
+        key-uri:
+
+eureka:
+  client:
+    enabled: ${EUREKA_CLIENT_ENABLED:true}
+    registerWithEureka: ${EUREKA_CLIENT_ENABLED:true}
+    serviceUrl:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+        
+spring:
+# Postgres
+#  datasource:
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/template2
+#    username: postgres
+#    password: 123456
+#    hikari:
+#      connection-test-query:
+#  jpa:
+#    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+#    show-sql: true
+#    generate-ddl: false
+#    hibernate:
+#      ddl-auto: none
+#      naming: 
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    properties:
+#      hibernate:
+#        globally_quoted_identifiers: true # Для PostgreSQL установить в true, для MSSQL, Oracle в false
+#        jdbc:
+#          time_zone: UTC
+#          lob:
+#            non_contextual_creation: true
+
+# Oracle
+#  datasource:
+#    driverClassName: oracle.jdbc.OracleDriver
+#    url: jdbc:oracle:thin:@aml2devops:1521:tstdf
+#    username: TEMPLATE
+#    password: TEMPLATE
+#    hikari:
+#      connection-test-query:
+#  jpa:
+#    database-platform: org.hibernate.dialect.Oracle10gDialect
+#    show-sql: true
+#    generate-ddl: false
+#    hibernate:
+#      ddl-auto: none
+#      naming: 
+#        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#    properties:
+#      hibernate:
+#        globally_quoted_identifiers: false # Для PostgreSQL установить в true, для MSSQL, Oracle в false
+#        jdbc:
+#          time_zone: UTC
+#          lob:
+#            non_contextual_creation: true
+
+# h2
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=sms
+    driverClassName: org.postgresql.Driver
+    username: postgres
+    password: admin
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+    show-sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        jdbc:
+          time_zone: UTC
+          lob:
+            non_contextual_creation: true
+# Generate Events Publisher or Subsriber
+#  kafka:
+#    bootstrap-servers: ${KAFKA_URL:localhost:9092}
+#    admin:
+#      properties:
+#        request.timeout.ms: ${KAFKA_REQUEST_TIMEOUT:5000}
+
+dstrace:
+  enabled: ${TRACER_ENABLE:false}
+
+logging:
+  level:
+    ru.diasoft: ${LOGGING_LEVEL:DEBUG}
