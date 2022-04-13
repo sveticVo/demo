@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "sms_verification", schema="sms")
+@Table(name = "sms_verification")
 public class SmsVerification {
 
     @Id
